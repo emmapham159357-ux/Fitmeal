@@ -30,7 +30,7 @@ h1, h2, h3, h4, h5, h6 { color: var(--primary); }
 /* ── Page enter animation ── */
 @keyframes pageEnter {
   from { opacity: 0; transform: translateY(18px); }
-  to   { opacity: 1; transform: translateY(0); }
+  to   { opacity: 1; transform: none; }
 }
 
 .main-content > * {
