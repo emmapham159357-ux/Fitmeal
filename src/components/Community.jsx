@@ -345,7 +345,7 @@ const Community = () => {
                   <h4>{post.author_name || post.user}</h4>
                   <span>{post.created_at ? new Date(post.created_at).toLocaleString('vi-VN') : (post.time || 'Vừa xong')}</span>
                 </div>
-                {(post.author_name === profile.username) && (
+                {(isLoggedIn && post.author_name === profile.username) && (
                   <button className="delete-post-btn ml-auto" onClick={() => handleDeletePost(post)}>
                     <Trash2 size={18} />
                   </button>
