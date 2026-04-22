@@ -1,0 +1,366 @@
+.menu-container {
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.menu-layout {
+  display: grid;
+  grid-template-columns: 1fr 1.2fr;
+  gap: 30px;
+}
+
+/* Calculator Section */
+.menu-form {
+  padding: 25px;
+}
+
+.goal-buttons {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-top: 10px;
+}
+
+.btn-goal {
+  padding: 10px 22px;
+  border-radius: 30px;
+  background: #f0f0f0;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-weight: 600;
+  color: #333;
+  font-size: 0.95rem;
+}
+
+.btn-goal:hover {
+  background: #e5e5e5;
+}
+
+.btn-goal.active {
+  background: var(--primary);
+  color: white;
+  box-shadow: 0 4px 10px rgba(119, 85, 55, 0.2);
+}
+
+.btn-secondary.w-100 {
+  background: #FBE29D;
+  color: var(--primary);
+  border: none;
+  border-radius: 12px;
+  padding: 15px;
+  font-weight: 700;
+  font-size: 1.1rem;
+  margin-top: 15px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+}
+
+.flex-center {
+  display: flex;
+  align-items: center;
+}
+
+.radio-group {
+  display: flex;
+  gap: 20px;
+}
+
+.radio-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+/* BMI Badge */
+.bmi-badge {
+  background: var(--bg);
+  padding: 12px 15px;
+  border-radius: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border: 1px solid var(--secondary);
+}
+
+.bmi-status {
+  padding: 2px 10px;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: 700;
+}
+
+.bmi-status.Gầy { background: #E3F2FD; color: #1976D2; }
+.bmi-status.Bình\ thường { background: #E8F5E9; color: #2E7D32; }
+.bmi-status.Thừa\ cân { background: #FFF3E0; color: #EF6C00; }
+.bmi-status.Béo\ phì { background: #FFEBEE; color: #C62828; }
+
+.result-details {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.res-item {
+  display: flex;
+  justify-content: space-between;
+  color: #555;
+  font-size: 0.95rem;
+}
+
+.res-item.highlighted {
+  margin-top: 10px;
+  padding-top: 15px;
+  border-top: 2px dashed var(--secondary);
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.suggested-val {
+  font-size: 1.8rem;
+  font-weight: 800;
+  color: var(--primary);
+}
+
+.bmi-warning {
+  background: #FFF9C4;
+  padding: 10px 15px;
+  border-radius: 8px;
+  display: flex;
+  gap: 10px;
+  font-size: 0.85rem;
+  color: #827717;
+  line-height: 1.4;
+}
+
+/* Generator Section */
+.generator-settings {
+  padding: 25px;
+  background: var(--bg);
+  border: 1px solid var(--secondary);
+}
+
+.current-target-box {
+  background: white;
+  padding: 15px;
+  border-radius: 10px;
+  display: flex;
+  gap: 20px;
+}
+
+.target-item label {
+  display: block;
+  font-size: 0.8rem;
+  color: #888;
+  margin-bottom: 2px;
+}
+
+.target-item span {
+  font-weight: 700;
+  color: var(--primary);
+  font-size: 1.1rem;
+}
+
+.generate-btn {
+  padding: 16px;
+  font-size: 1.1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(119, 85, 55, 0.15);
+  transition: all 0.2s;
+}
+
+.generate-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 15px rgba(119, 85, 55, 0.25);
+}
+
+/* Menu Result Card */
+.menu-header {
+  border-bottom: 1px solid #eee;
+  padding-bottom: 20px;
+  margin-bottom: 25px;
+}
+
+.total-summary p {
+  font-size: 0.9rem;
+  color: #888;
+  margin-bottom: 5px;
+}
+
+.total-actual {
+  font-size: 1.4rem;
+  display: flex;
+  align-items: center;
+}
+
+.total-actual strong {
+  margin-left: 10px;
+  color: var(--primary);
+  font-size: 1.8rem;
+}
+
+.logic-note {
+  font-size: 0.85rem;
+  color: #666;
+  font-style: italic;
+  margin-top: 8px;
+}
+
+.meal-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.meal-card-new {
+  display: flex;
+  background: var(--bg);
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid var(--secondary);
+}
+
+.meal-type-label {
+  background: var(--primary);
+  color: white;
+  writing-mode: vertical-rl;
+  text-transform: uppercase;
+  font-size: 0.75rem;
+  font-weight: 800;
+  padding: 10px 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  letter-spacing: 2px;
+}
+
+.meal-content-wrap {
+  padding: 15px 20px;
+  flex: 1;
+  display: flex;
+  align-items: center;
+}
+
+.meal-main-info {
+  flex: 1;
+}
+
+.meal-main-info strong {
+  display: block;
+  font-size: 1.1rem;
+  margin-bottom: 5px;
+  color: #333;
+}
+
+.meal-specs {
+  display: flex;
+  gap: 20px;
+  font-size: 0.9rem;
+}
+
+.spec-cal {
+  color: #E67E22;
+  font-weight: 700;
+}
+
+.spec-weight {
+  color: #666;
+}
+
+.spec-weight strong {
+  display: inline;
+  color: var(--primary);
+}
+
+/* Advice Box */
+.advice-box {
+  background: #E8F5E9;
+  padding: 15px 20px;
+  border-radius: 12px;
+  display: flex;
+  gap: 15px;
+  color: #2E7D32;
+  font-size: 0.9rem;
+  line-height: 1.4;
+  border: 1px solid #C8E6C9;
+}
+
+.empty-menu-state {
+  height: 400px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  border: 2px dashed var(--secondary);
+  background: transparent;
+  box-shadow: none;
+}
+
+.empty-content {
+  max-width: 300px;
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.4s ease-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@media (max-width: 900px) {
+  .menu-layout {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Ingredients Guide Card */
+.ingredients-guide-card {
+  padding: 20px;
+  background: white;
+  border: 1px solid #E8F5E9;
+  border-left: 4px solid #2E7D32;
+}
+
+.ingredients-guide-card h4 {
+  font-size: 1.1rem;
+  color: #2E7D32;
+}
+
+.ingredients-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 15px;
+}
+
+.ingredient-group {
+  padding: 8px 0;
+}
+
+.ingredient-group h6 {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #333;
+  margin-bottom: 4px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.ingredient-group p {
+  font-size: 0.8rem;
+  color: #666;
+  line-height: 1.4;
+  margin: 0;
+}
+
+@media (max-width: 500px) {
+  .ingredients-grid {
+    grid-template-columns: 1fr;
+  }
+}
