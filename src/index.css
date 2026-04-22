@@ -34,7 +34,7 @@ h1, h2, h3, h4, h5, h6 { color: var(--primary); }
 }
 
 .main-content > * {
-  animation: pageEnter 0.45s cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation: pageEnter 0.45s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 /* ══════════════════════════════
