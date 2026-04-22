@@ -25,6 +25,9 @@ try {
         order: () => Promise.resolve({ data: [], error: null }),
       }),
       insert: () => Promise.resolve({ data: null, error: new Error('Supabase not configured') }),
+      delete: () => ({
+        eq: () => Promise.resolve({ data: null, error: new Error('Supabase not configured') })
+      })
     }),
     storage: {
       from: () => ({

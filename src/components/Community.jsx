@@ -189,20 +189,30 @@ const Community = () => {
 
     try {
       if (postToDelete.isLocal) {
+        // Xóa khỏi localStorage cho các bài viết cục bộ
         const localPosts = JSON.parse(localStorage.getItem('fitmeal_local_posts') || '[]');
         const filtered = localPosts.filter(p => p.id !== postToDelete.id);
         localStorage.setItem('fitmeal_local_posts', JSON.stringify(filtered));
       } else {
+        // Thử xóa từ Supabase
         const { error } = await supabase
           .from('posts')
           .delete()
           .eq('id', postToDelete.id);
         
-        if (error) throw error;
+        if (error) {
+          // Xử lý báo lỗi nhẹ nhàng nếu chưa có bảng
+          if (!supabase.isConfigured || error.message.includes('does not exist')) {
+            alert('Lưu ý: Database chưa được thiết lập. Hãy thiết lập trong Supabase để tính năng Xóa hoạt động.');
+            return;
+          }
+          throw error;
+        }
       }
       fetchPosts();
     } catch (error) {
       console.error('Error deleting post:', error.message);
+      alert('Không thể xóa bài viết: ' + error.message);
     } finally {
       setShowDeleteModal(false);
       setPostToDelete(null);
