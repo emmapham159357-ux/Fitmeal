@@ -188,10 +188,13 @@ const Community = () => {
     if (!postToDelete) return;
 
     try {
-      if (postToDelete.isLocal) {
+      const isUUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(postToDelete.id);
+      
+      // Nếu không phải chuẩn UUID của Supabase thì chắc chắn là bài Local
+      if (postToDelete.isLocal || !isUUID) {
         // Xóa khỏi localStorage cho các bài viết cục bộ
         const localPosts = JSON.parse(localStorage.getItem('fitmeal_local_posts') || '[]');
-        const filtered = localPosts.filter(p => p.id !== postToDelete.id);
+        const filtered = localPosts.filter(p => String(p.id) !== String(postToDelete.id));
         localStorage.setItem('fitmeal_local_posts', JSON.stringify(filtered));
       } else {
         // Thử xóa từ Supabase
