@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Plus, Check, X, Search, Info } from 'lucide-react';
+import { useLocation } from 'react-router-dom';
 // Recharts removed to ensure maximum compatibility and fix white screen
 import './CalorieAnalyzer.css';
 
@@ -148,6 +149,7 @@ const DATABASE = [
 const COLORS = ['#775537', '#C0DDDA', '#FBE29D'];
 
 const CalorieAnalyzer = () => {
+  const location = useLocation();
   const [searchTerm, setSearchTerm] = useState('');
   const [searchResults, setSearchResults] = useState([]);
   const [selectedFood, setSelectedFood] = useState(null);
@@ -156,6 +158,24 @@ const CalorieAnalyzer = () => {
 
   const [showAddModal, setShowAddModal] = useState(false);
   const [addFeedback, setAddFeedback] = useState(false);
+
+  useEffect(() => {
+    if (location.state?.searchFood) {
+      const foodName = location.state.searchFood;
+      const foundFood = DATABASE.find(item => item.name === foodName);
+      if (foundFood) {
+        setSelectedFood(foundFood);
+        setSearchTerm('');
+        setGramInput(100);
+        setCalculated({
+          cal: foundFood.cal,
+          p: foundFood.p,
+          c: foundFood.c,
+          f: foundFood.f,
+        });
+      }
+    }
+  }, [location.state]);
 
   useEffect(() => {
     if (searchTerm.trim() === '') {

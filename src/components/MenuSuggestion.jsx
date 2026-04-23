@@ -1,70 +1,116 @@
 import React, { useState, useEffect } from 'react';
-import { Calculator, Utensils, CheckCircle, AlertTriangle, TrendingDown } from 'lucide-react';
+import { Calculator, Utensils, CheckCircle, AlertTriangle, TrendingDown, Search } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 import './MenuSuggestion.css';
 
 const MOCK_MEALS = {
   Sáng: [
-    { name: 'Yến mạch trái cây tươi', cals: 350, baseWeight: 200, unit: 'g' },
-    { name: 'Bánh mì đen trứng ốp la', cals: 300, baseWeight: 150, unit: 'g', tags: ['protein'] },
-    { name: 'Phở gạo lứt bò tái', cals: 400, baseWeight: 400, unit: 'g', tags: ['protein'] },
-    { name: 'Smoothie chuối bơ đậu phộng', cals: 380, baseWeight: 300, unit: 'ml' },
-    { name: 'Bún gạo lứt chả cá', cals: 350, baseWeight: 400, unit: 'g', tags: ['protein'] },
-    { name: 'Overnight Oats dâu tây', cals: 350, baseWeight: 250, unit: 'g' },
-    { name: 'Pancake chuối yến mạch', cals: 320, baseWeight: 200, unit: 'g' },
-    { name: 'Smoothie Bowl xanh', cals: 280, baseWeight: 300, unit: 'ml' },
-    { name: 'Trứng chần & Bánh mì đen', cals: 310, baseWeight: 180, unit: 'g', tags: ['protein'] },
-    { name: 'Pudding hạt chia xoài', cals: 250, baseWeight: 200, unit: 'g' },
-    { name: 'Bánh mì đen phết bơ tôm', cals: 380, baseWeight: 200, unit: 'g', tags: ['protein'] },
-    { name: 'Sữa chua Hy Lạp mix hạt', cals: 220, baseWeight: 150, unit: 'g', tags: ['protein'] },
-    { name: 'Khoai lang tím luộc & Trứng', cals: 280, baseWeight: 200, unit: 'g', tags: ['protein'] },
-    { name: 'Omelet rau củ', cals: 260, baseWeight: 150, unit: 'g', tags: ['protein'] },
-    { name: 'Granola ngũ cốc & Sữa tươi', cals: 340, baseWeight: 250, unit: 'ml' },
+    { name: 'Phở bò tái (1 bát)', cals: 420, baseWeight: 400, unit: 'g', tags: ['protein'] },
+    { name: 'Bún bò Huế', cals: 500, baseWeight: 400, unit: 'g', tags: ['protein'] },
+    { name: 'Mì Quảng', cals: 435, baseWeight: 300, unit: 'g', tags: ['protein'] },
+    { name: 'Bún riêu cua', cals: 315, baseWeight: 300, unit: 'g' },
+    { name: 'Bánh mì thịt chả', cals: 280, baseWeight: 100, unit: 'g', tags: ['protein'] },
+    { name: 'Bánh cuốn (chỉ bánh)', cals: 130, baseWeight: 100, unit: 'g' },
+    { name: 'Sữa chua Hy Lạp mix hạt', cals: 175, baseWeight: 100, unit: 'g', tags: ['protein'] },
+    { name: 'Yến mạch sống', cals: 194, baseWeight: 50, unit: 'g' },
+    { name: 'Sữa tươi không đường', cals: 124, baseWeight: 200, unit: 'ml' },
+    { name: 'Trứng gà (cả quả)', cals: 155, baseWeight: 100, unit: 'g', tags: ['protein'] },
+    { name: 'Trứng cút', cals: 158, baseWeight: 100, unit: 'g' },
+    { name: 'Súp bí đỏ kem sữa', cals: 110, baseWeight: 200, unit: 'ml' },
+    { name: 'Bún chả Hà Nội', cals: 510, baseWeight: 300, unit: 'g', tags: ['protein'] },
+    { name: 'Cơm tấm sườn bì chả', cals: 430, baseWeight: 200, unit: 'g', tags: ['protein'] },
+    { name: 'Phở tươi', cals: 143, baseWeight: 100, unit: 'g' },
+    { name: 'Bánh mì đen/nguyên cám', cals: 250, baseWeight: 100, unit: 'g' },
+    { name: 'Sữa tươi tách béo', cals: 70, baseWeight: 200, unit: 'ml' },
+    { name: 'Sữa đậu nành không đường', cals: 66, baseWeight: 200, unit: 'ml' },
+    { name: 'Cà phê đen (thêm chút đường)', cals: 15, baseWeight: 100, unit: 'ml' },
+    { name: 'Bạc xỉu / Cà phê sữa', cals: 100, baseWeight: 100, unit: 'ml' },
+    { name: 'Bánh xèo (1 cái medium)', cals: 240, baseWeight: 100, unit: 'g' },
+    { name: 'Hủ tiếu Nam Vang', cals: 360, baseWeight: 300, unit: 'g', tags: ['protein'] },
   ],
-  Chính: [ // Trưa, Tối
-    { name: 'Ức gà áp chảo + Khoai lang', cals: 450, baseWeight: 250, unit: 'g', tags: ['protein'] },
-    { name: 'Cá hồi nướng + Măng tây', cals: 500, baseWeight: 250, unit: 'g', tags: ['protein'] },
-    { name: 'Đậu hũ sốt nấm + Cơm gạo lứt', cals: 400, baseWeight: 300, unit: 'g' },
-    { name: 'Bò lúc lắc rau củ', cals: 550, baseWeight: 300, unit: 'g', tags: ['protein'] },
-    { name: 'Tôm ram mặn ngọt + Bông cải', cals: 420, baseWeight: 250, unit: 'g' },
-    { name: 'Salad gà áp chảo dầu giấm', cals: 350, baseWeight: 300, unit: 'g', tags: ['protein'] },
-    { name: 'Miến xào ức gà nấm mèo', cals: 410, baseWeight: 350, unit: 'g', tags: ['protein'] },
-    { name: 'Ức gà áp chảo sốt cam', cals: 420, baseWeight: 300, unit: 'g', tags: ['protein'] },
-    { name: 'Salad cá hồi', cals: 450, baseWeight: 250, unit: 'g', tags: ['protein'] },
-    { name: 'Bún gạo lứt trộn bò', cals: 480, baseWeight: 400, unit: 'g', tags: ['protein'] },
-    { name: 'Cơm gạo lứt cá thu nướng', cals: 520, baseWeight: 350, unit: 'g', tags: ['protein'] },
-    { name: 'Poke Bowl tôm tươi', cals: 460, baseWeight: 300, unit: 'g', tags: ['protein'] },
-    { name: 'Đậu hũ sốt cà chua & Nấm', cals: 380, baseWeight: 350, unit: 'g' },
-    { name: 'Salad gà nướng sốt mè rang', cals: 400, baseWeight: 300, unit: 'g', tags: ['protein'] },
-    { name: 'Mì Ý nguyên cám sốt bò bằm', cals: 550, baseWeight: 400, unit: 'g', tags: ['protein'] },
-    { name: 'Thăn lợn áp chảo lá mác mật', cals: 440, baseWeight: 300, unit: 'g', tags: ['protein'] },
-    { name: 'Chả tôm bọc sả nướng', cals: 410, baseWeight: 250, unit: 'g', tags: ['protein'] },
-    { name: 'Cá chẽm hấp xì dầu', cals: 390, baseWeight: 350, unit: 'g', tags: ['protein'] },
-    { name: 'Soup súp lơ trắng & Gà', cals: 320, baseWeight: 400, unit: 'ml', tags: ['protein'] },
-    { name: 'Canh rong biển đậu hũ', cals: 250, baseWeight: 350, unit: 'ml' },
-    { name: 'Salad ức gà táo xanh', cals: 350, baseWeight: 300, unit: 'g', tags: ['protein'] },
-    { name: 'Măng tây cuộn thịt bò', cals: 420, baseWeight: 250, unit: 'g', tags: ['protein'] },
-    { name: 'Miến đậu xanh trộn hải sản', cals: 450, baseWeight: 400, unit: 'g', tags: ['protein'] },
-    { name: 'Gỏi cuốn ngũ sắc', cals: 380, baseWeight: 300, unit: 'g' },
-    { name: 'Nấm kho tiêu xanh', cals: 280, baseWeight: 200, unit: 'g' },
-    { name: 'Bí ngòi xào tôm nõn', cals: 340, baseWeight: 250, unit: 'g', tags: ['protein'] },
-    { name: 'Cá hồi nướng giấy bạc', cals: 480, baseWeight: 250, unit: 'g', tags: ['protein'] },
+  Chính: [
+    { name: 'Ức gà nướng mật ong', cals: 350, baseWeight: 200, unit: 'g', tags: ['protein'] },
+    { name: 'Cá hồi (phi lê sống)', cals: 416, baseWeight: 200, unit: 'g', tags: ['protein'] },
+    { name: 'Gà xào sả ớt', cals: 320, baseWeight: 200, unit: 'g', tags: ['protein'] },
+    { name: 'Cá lóc kho tộ', cals: 300, baseWeight: 200, unit: 'g', tags: ['protein'] },
+    { name: 'Bò beefsteak măng tây', cals: 475, baseWeight: 250, unit: 'g', tags: ['protein'] },
+    { name: 'Thịt kho tàu (có mỡ)', cals: 520, baseWeight: 200, unit: 'g', tags: ['protein'] },
+    { name: 'Canh chua cá lóc', cals: 135, baseWeight: 300, unit: 'ml' },
+    { name: 'Canh rong biển đậu hũ', cals: 105, baseWeight: 300, unit: 'ml' },
+    { name: 'Đậu hũ dồn thịt sốt cà', cals: 290, baseWeight: 200, unit: 'g', tags: ['protein'] },
+    { name: 'Bò lúc lắc rau củ', cals: 450, baseWeight: 250, unit: 'g', tags: ['protein'] },
+    { name: 'Salad ức gà dầu giấm', cals: 285, baseWeight: 300, unit: 'g' },
+    { name: 'Gỏi cuốn tôm thịt (1 cuốn ~ 80g)', cals: 140, baseWeight: 80, unit: 'g', tags: ['protein'] },
+    { name: 'Cơm gạo lứt cuộn rong biển', cals: 260, baseWeight: 200, unit: 'g' },
+    { name: 'Miến trộn rau củ ức gà', cals: 345, baseWeight: 300, unit: 'g', tags: ['protein'] },
+    { name: 'Rau muống xào tỏi', cals: 130, baseWeight: 200, unit: 'g' },
+    { name: 'Ức gà (sống)', cals: 330, baseWeight: 200, unit: 'g', tags: ['protein'] },
+    { name: 'Ức gà xông khói', cals: 300, baseWeight: 200, unit: 'g', tags: ['protein'] },
+    { name: 'Thịt bò thăn (sống)', cals: 500, baseWeight: 200, unit: 'g', tags: ['protein'] },
+    { name: 'Thịt bò bắp (lõi rùa)', cals: 400, baseWeight: 200, unit: 'g', tags: ['protein'] },
+    { name: 'Cá ngừ đóng ngâm nước', cals: 116, baseWeight: 100, unit: 'g', tags: ['protein'] },
+    { name: 'Cá ba sa (sống)', cals: 260, baseWeight: 200, unit: 'g', tags: ['protein'] },
+    { name: 'Tôm sú (sống)', cals: 198, baseWeight: 200, unit: 'g', tags: ['protein'] },
+    { name: 'Mực ống hấp', cals: 184, baseWeight: 200, unit: 'g', tags: ['protein'] },
+    { name: 'Thịt đùi ếch', cals: 146, baseWeight: 200, unit: 'g', tags: ['protein'] },
+    { name: 'Thịt heo nạc thăn', cals: 286, baseWeight: 200, unit: 'g', tags: ['protein'] },
+    { name: 'Thịt ba rọi heo (sống)', cals: 518, baseWeight: 100, unit: 'g' },
+    { name: 'Cơm trắng', cals: 195, baseWeight: 150, unit: 'g' },
+    { name: 'Cơm gạo lứt', cals: 165, baseWeight: 150, unit: 'g' },
+    { name: 'Gạo tẻ (sống)', cals: 179, baseWeight: 50, unit: 'g' },
+    { name: 'Miến dong sống', cals: 175, baseWeight: 50, unit: 'g' },
+    { name: 'Bột chiên', cals: 290, baseWeight: 100, unit: 'g' },
   ],
   Phụ: [
-    { name: 'Sữa chua Hy Lạp', cals: 150, baseWeight: 150, unit: 'g', tags: ['protein'] },
-    { name: 'Hạnh nhân', cals: 100, baseWeight: 20, unit: 'g' },
-    { name: 'Táo xanh/đỏ', cals: 60, baseWeight: 150, unit: 'g' },
-    { name: 'Trứng gà luộc', cals: 70, baseWeight: 50, unit: 'g', tags: ['protein'] },
-    { name: 'Táo tây phết bơ đậu phộng', cals: 180, baseWeight: 200, unit: 'g' },
-    { name: 'Hạt điều & Hạnh nhân rang', cals: 150, baseWeight: 30, unit: 'g' },
-    { name: 'Thanh năng lượng (Energy Bar)', cals: 200, baseWeight: 50, unit: 'g' },
-    { name: 'Trứng vịt lộn luộc', cals: 180, baseWeight: 70, unit: 'g', tags: ['protein'] },
-    { name: 'Đậu nành Edamame luộc', cals: 120, baseWeight: 100, unit: 'g' },
-    { name: 'Sinh tố bơ chuối ít ngọt', cals: 250, baseWeight: 250, unit: 'ml' },
-    { name: 'Bánh quy yến mạch cacao', cals: 180, baseWeight: 50, unit: 'g' },
-    { name: 'Trái cây musli', cals: 220, baseWeight: 200, unit: 'g' },
-    { name: 'Khoai tây chiên nồi chiên không dầu', cals: 150, baseWeight: 100, unit: 'g' },
-    { name: 'Rau củ luộc chấm kho quẹt Eat Clean', cals: 120, baseWeight: 200, unit: 'g' },
-    { name: 'Sữa hạt sen tự làm', cals: 100, baseWeight: 200, unit: 'ml' },
+    { name: 'Sữa chua Hy Lạp (không đường)', cals: 59, baseWeight: 100, unit: 'g', tags: ['protein'] },
+    { name: 'Hạnh nhân', cals: 115, baseWeight: 20, unit: 'g' },
+    { name: 'Táo tây', cals: 52, baseWeight: 100, unit: 'g' },
+    { name: 'Chuối (chín)', cals: 89, baseWeight: 100, unit: 'g' },
+    { name: 'Whey Protein (Bột isolate)', cals: 114, baseWeight: 30, unit: 'g', tags: ['protein'] },
+    { name: 'Sinh tố cải xoăn mít (Kale Smoothies)', cals: 110, baseWeight: 200, unit: 'ml' },
+    { name: 'Biscotti nguyên cám', cals: 200, baseWeight: 50, unit: 'g' },
+    { name: 'Bánh ngói hạnh nhân keto', cals: 240, baseWeight: 50, unit: 'g' },
+    { name: 'Hạt điều', cals: 165, baseWeight: 30, unit: 'g' },
+    { name: 'Kẹo lạc (đậu phộng)', cals: 135, baseWeight: 30, unit: 'g' },
+    { name: 'Mứt dừa', cals: 114, baseWeight: 30, unit: 'g' },
+    { name: 'Trà đào cam sả', cals: 170, baseWeight: 200, unit: 'ml' },
+    { name: 'Bánh flan / Caramen', cals: 145, baseWeight: 100, unit: 'g' },
+    { name: 'Lòng trắng trứng gà', cals: 52, baseWeight: 100, unit: 'g', tags: ['protein'] },
+    { name: 'Trứng vịt lộn', cals: 182, baseWeight: 100, unit: 'g', tags: ['protein'] },
+    { name: 'Phô mai con bò cười', cals: 51, baseWeight: 20, unit: 'g' },
+    { name: 'Khoai lang luộc', cals: 86, baseWeight: 100, unit: 'g' },
+    { name: 'Khoai tây luộc', cals: 87, baseWeight: 100, unit: 'g' },
+    { name: 'Bơ (trái)', cals: 160, baseWeight: 100, unit: 'g' },
+    { name: 'Dưa hấu', cals: 60, baseWeight: 200, unit: 'g' },
+    { name: 'Đu đủ chín', cals: 86, baseWeight: 200, unit: 'g' },
+    { name: 'Thanh long', cals: 120, baseWeight: 200, unit: 'g' },
+    { name: 'Bưởi', cals: 76, baseWeight: 200, unit: 'g' },
+    { name: 'Cam', cals: 47, baseWeight: 100, unit: 'g' },
+    { name: 'Kiwi', cals: 61, baseWeight: 100, unit: 'g' },
+    { name: 'Xoài chín', cals: 120, baseWeight: 200, unit: 'g' },
+    { name: 'Nho', cals: 69, baseWeight: 100, unit: 'g' },
+    { name: 'Ổi', cals: 68, baseWeight: 100, unit: 'g' },
+    { name: 'Đậu phộng (lạc luộc)', cals: 159, baseWeight: 50, unit: 'g' },
+    { name: 'Hạt óc chó', cals: 130, baseWeight: 20, unit: 'g' },
+    { name: 'Hạt chia', cals: 48, baseWeight: 10, unit: 'g' },
+    { name: 'Bơ đậu phộng', cals: 588, baseWeight: 100, unit: 'g' },
+    { name: 'Chè đậu đen (có đường)', cals: 220, baseWeight: 200, unit: 'g' },
+    { name: 'Chè bưởi', cals: 270, baseWeight: 200, unit: 'g' },
+    { name: 'Trà sữa trân châu', cals: 450, baseWeight: 250, unit: 'ml' },
+    { name: 'Sương sáo hạt é', cals: 100, baseWeight: 200, unit: 'g' },
+    { name: 'Nước mía', cals: 130, baseWeight: 200, unit: 'ml' },
+    { name: 'Sinh tố bơ (có đường sữa)', cals: 330, baseWeight: 200, unit: 'ml' },
+    { name: 'Sinh tố mãng cầu', cals: 190, baseWeight: 200, unit: 'ml' },
+    { name: 'Sữa chua dẻo / kem', cals: 130, baseWeight: 100, unit: 'g' },
+    { name: 'Bánh chuối nướng', cals: 210, baseWeight: 100, unit: 'g' },
+    { name: 'Rau muống', cals: 19, baseWeight: 100, unit: 'g' },
+    { name: 'Bông cải xanh / Súp lơ', cals: 34, baseWeight: 100, unit: 'g' },
+    { name: 'Bí đỏ', cals: 26, baseWeight: 100, unit: 'g' },
+    { name: 'Bí xanh', cals: 19, baseWeight: 100, unit: 'g' },
+    { name: 'Cà rốt', cals: 41, baseWeight: 100, unit: 'g' },
+    { name: 'Ớt chuông', cals: 20, baseWeight: 100, unit: 'g' },
+    { name: 'Cà chua bi', cals: 18, baseWeight: 100, unit: 'g' },
+    { name: 'Hành tây', cals: 40, baseWeight: 100, unit: 'g' },
   ]
 };
 
@@ -85,6 +131,7 @@ const activityMultipliers = {
 };
 
 const MenuSuggestion = () => {
+  const navigate = useNavigate();
   const [profile, setProfile] = useState(null);
   const [formData, setFormData] = useState({
     gender: 'Nữ',
@@ -393,12 +440,21 @@ const MenuSuggestion = () => {
                   <div key={mealName} className="meal-card-new">
                     <div className="meal-type-label">{mealName}</div>
                     <div className="meal-content-wrap">
-                      <div className="meal-main-info">
-                        <strong>{meal.name}</strong>
-                        <div className="meal-specs">
-                          <span className="spec-cal">{meal.adjustedCals} kcal</span>
-                          <span className="spec-weight">Định lượng: <strong>{meal.adjustedWeight}{meal.unit}</strong></span>
+                      <div className="meal-main-info" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', width: '100%' }}>
+                        <div>
+                          <strong>{meal.name}</strong>
+                          <div className="meal-specs">
+                            <span className="spec-cal">{meal.adjustedCals} kcal</span>
+                            <span className="spec-weight">Định lượng: <strong>{meal.adjustedWeight}{meal.unit}</strong></span>
+                          </div>
                         </div>
+                        <button 
+                          className="btn-secondary" 
+                          onClick={() => navigate('/calories', { state: { searchFood: meal.name } })}
+                          style={{ padding: '6px 12px', fontSize: '0.85rem', display: 'flex', alignItems: 'center', gap: '5px' }}
+                        >
+                          <Search size={14} /> Phân tích
+                        </button>
                       </div>
                     </div>
                   </div>
